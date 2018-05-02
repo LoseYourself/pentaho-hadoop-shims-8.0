@@ -1,4 +1,12 @@
 # pentaho-hadoop-shims #
+Pentaho Kettle大数据插件相关依赖, 用于插件BUG修复.
+
+Baseline
+--------------
+
+基线版本 : big-data-plugin-8.0.0.0-R. 
+
+# pentaho-hadoop-shims #
 Hadoop Configurations, also known and shims and the Pentaho Big Data Adaptive layer, are collections of Hadoop libraries required to communicate with a specific version of Hadoop (and related tools: Hive, HBase, Sqoop, Pig, etc.). They are designed to be easily configured.
 
 How to build
