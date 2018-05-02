@@ -30,6 +30,8 @@ import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.mapred.Table10InputFormatDiscloser;
+import org.apache.hadoop.hbase.security.User;
+import org.apache.hadoop.security.UserGroupInformation;
 import org.pentaho.hbase.factory.HBaseAdmin;
 import org.pentaho.hbase.factory.HBaseClientFactory;
 import org.pentaho.hbase.factory.HBaseClientFactoryLocator;
@@ -41,11 +43,13 @@ import org.pentaho.hbase.mapred.PentahoTableRecordReader;
 public class HBase10ClientFactory implements HBaseClientFactory {
   private Connection conn = null;
   private final Configuration conf;
+  private final User user;
 
   public HBase10ClientFactory( Configuration conf ) throws Exception {
     this.conf = conf;
+    this.user = (conf != null ? User.create(UserGroupInformation.createRemoteUser(conf.get(org.pentaho.hbase.shim.spi.HBaseConnection.USERNAME_KEY))) : null);
     if ( conf != null ) {
-      conn = ConnectionFactory.createConnection( conf );
+      conn = ConnectionFactory.createConnection( conf, user );
     } else {
       conn = null;
     }
@@ -53,7 +57,7 @@ public class HBase10ClientFactory implements HBaseClientFactory {
 
   public synchronized Connection getConnection() throws IOException {
     if(conn == null) {
-      conn = ConnectionFactory.createConnection( conf );
+      conn = ConnectionFactory.createConnection( conf, user );
     }
     
     return conn;
@@ -117,7 +121,8 @@ public class HBase10ClientFactory implements HBaseClientFactory {
 
       @Override
       protected void setHBaseTable( Configuration conf, String tableName ) throws IOException {
-        final Connection conn = ConnectionFactory.createConnection( conf );
+        User user = (conf != null ? User.create(UserGroupInformation.createRemoteUser(conf.get(org.pentaho.hbase.shim.spi.HBaseConnection.USERNAME_KEY))) : null);
+        final Connection conn = ConnectionFactory.createConnection( conf, user );
         invoker.initializeTable( conn, TableName.valueOf( tableName ) );
       }
 

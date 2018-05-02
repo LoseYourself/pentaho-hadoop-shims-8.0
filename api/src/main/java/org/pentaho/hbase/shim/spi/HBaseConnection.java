@@ -43,6 +43,7 @@ public abstract class HBaseConnection {
   public static final String SITE_KEY = "hbase.site";
   public static final String ZOOKEEPER_QUORUM_KEY = "hbase.zookeeper.quorum";
   public static final String ZOOKEEPER_PORT_KEY = "hbase.zookeeper.property.clientPort";
+  public static final String USERNAME_KEY = "hbase.username";
 
   // constant table creation option keys (commented out keys don't exist as
   // options for HColumnDescriptor in 0.90.3)

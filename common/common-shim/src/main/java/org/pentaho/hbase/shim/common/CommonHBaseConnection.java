@@ -108,6 +108,7 @@ public class CommonHBaseConnection extends HBaseConnection {
       String siteConfig = connProps.getProperty( SITE_KEY );
       String zookeeperQuorum = connProps.getProperty( ZOOKEEPER_QUORUM_KEY );
       String zookeeperPort = connProps.getProperty( ZOOKEEPER_PORT_KEY );
+      String username = connProps.getProperty( USERNAME_KEY );
 
       m_config = new Configuration();
       try {
@@ -151,6 +152,10 @@ public class CommonHBaseConnection extends HBaseConnection {
             logMessages.add( BaseMessages.getString( PKG, "CommonHBaseConnection.Error.UnableToParseZookeeperPort" ) );
           }
         }
+      }
+
+      if ( !isEmpty( username ) ) {
+        m_config.set( USERNAME_KEY, username );
       }
 
       if ( log.isDebug() ) {
